@@ -1,15 +1,10 @@
+import inquirer from 'inquirer';
 
-
-async function main() {
-    const [drivers, destinations] = await readDriversAndDestinations();
-    const driverAssignments = mapDriversToDestinations(drivers, destinations);
-}
-
-main();
+const [drivers, destinations] = await readDriversAndDestinations();
+const driverAssignments = mapDriversToDestinations(drivers, destinations);
 
 async function readDriversAndDestinations () {
     // TODO
-    const inquirer = require('inquirer');
     const answers = await inquirer.prompt(
         [
             {
@@ -48,3 +43,5 @@ function calculateSuitabilityScore(name: string, address: string) {
     // TODO
     throw new Error(`${name}:${address}`);
 }
+
+// export{};
