@@ -16,5 +16,5 @@ function mapDriversToDestinations(names: Iterable<String>, addresses: Iterable<S
 
 function calculateSuitabilityScore(name: string, address: string) {
     // TODO
-    throw new Error(`${name}:${addresse}`);
+    throw new Error(`${name}:${address}`);
 }
