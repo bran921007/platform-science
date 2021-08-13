@@ -1,0 +1,1 @@
+This is the proposed solution to the driver assignment coding exercise given by Platform Science to evaluate my suitability to fill a role in the company.

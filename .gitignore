@@ -1,0 +1,11 @@
+# Node-specific
+node_modules/
+build
+package-lock.json
+npm-debug.log
+.npm
+.env
+test/*.log
+
+# Mac-specific files
+.DS_Store
