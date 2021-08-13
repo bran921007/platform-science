@@ -1,0 +1,31 @@
+{
+  "name": "platform-science",
+  "version": "0.1.0",
+  "description": "Driver assignment coding exercise for Platform Science",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf ./build && tsc",
+    "start": "npm run build && node build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djilo/platform-science.git"
+  },
+  "keywords": [
+    "Combinatorial Optimization",
+    "Assignment Problem"
+  ],
+  "author": "Danilo R. Unite",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/djilo/platform-science/issues"
+  },
+  "homepage": "https://github.com/djilo/platform-science#readme",
+  "devDependencies": {
+    "typescript": "^4.3.5",
+    "@types/node": "^16.6.1",
+    "ts-node": "^10.2.0",
+    "rimraf": "^3.0.2"
+  }
+}

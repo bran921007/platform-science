@@ -4,6 +4,7 @@ const driverAssignments = mapDriversToDestinations(drivers, destinations);
 
 function readDriversAndDestinations() {
     // TODO
+    console.log(process.argv);
     const drivers: string[] = [];
     const destinations: string[] = [];
     return [drivers, destinations];
@@ -11,7 +12,7 @@ function readDriversAndDestinations() {
 
 function mapDriversToDestinations(names: Iterable<String>, addresses: Iterable<String>) {
     // TODO
-    throw new Error(`${names}:${addresses}`);
+    // throw new Error(`${names}:${addresses}`);
 }
 
 function calculateSuitabilityScore(name: string, address: string) {
