@@ -98,18 +98,29 @@ function getNumberOfVowels(name: string): number {
 }
 
 function getNumberOfConsonants(name: string): number {
-    const m = name.match(/^[aeiou]/gi);
+    const m = name.match(/[bcdfghjklmnpqrstvwxyz]/gi);
     return m === null ? 0 : m.length;
 }
 
 function hasLengthWithCommonFactors(name: string, address: string): boolean {
-    const nameLengthFactors = getFactorsBesides1(name.length);
-    const addressLengthFactors = getFactorsBesides1(address.length);
-    // TODO
-    return false;
+    // Normalize the names and addresses by stripping any whitespace
+    const strippedName = stripWhiteSpace(name);
+    const strippedAddress = stripWhiteSpace(address);
+
+    const addressLengthFactors = getFactorsBesides1(strippedAddress.length);
+    const nameLengthFactors = getFactorsBesides1(strippedName.length);
+
+    return addressLengthFactors.some(factor => nameLengthFactors.includes(factor));
 }
 
-function getFactorsBesides1(length: number): number[] {
-    // TODO
-    return [];
+function stripWhiteSpace(str: string) {
+    return str.replace(/\s+/g,'');
+}
+function getFactorsBesides1(length: number) {
+    return Array
+        // Create sequence of numbers up to the given number
+        // e.g. 7 -> [1,2,3,4,5,6,7]
+        .from(Array(length), (_, i) => i + 1)
+        // Filter for numbers in the sequence that the given length is divisible by
+        .filter(i => length % i === 0 && i != 1); // Ignore 1
 }
