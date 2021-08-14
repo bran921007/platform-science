@@ -7,7 +7,6 @@ const {drivers, destinations} = await readDriversAndDestinations();
 const driverAssignments = assignDriversToDestinations(drivers, destinations);
 
 // TODO
-console.log(driverAssignments);
 
 async function readDriversAndDestinations (
 ) : Promise<{drivers: string[], destinations: string[]}> {
@@ -109,6 +108,7 @@ function hasLengthWithCommonFactors(name: string, address: string): boolean {
 
     const addressLengthFactors = getFactorsBesides1(strippedAddress.length);
     const nameLengthFactors = getFactorsBesides1(strippedName.length);
+    const testfactors = getFactorsBesides1(30);
 
     return addressLengthFactors.some(factor => nameLengthFactors.includes(factor));
 }
@@ -118,9 +118,9 @@ function stripWhiteSpace(str: string) {
 }
 function getFactorsBesides1(length: number) {
     return Array
-        // Create sequence of numbers up to the given number
-        // e.g. 7 -> [1,2,3,4,5,6,7]
-        .from(Array(length), (_, i) => i + 1)
+        // Create sequence of numbers, ignoring 1, up to the given number
+        // e.g. 7 -> [2,3,4,5,6,7]
+        .from(Array(length), (_, i) => i + 2)
         // Filter for numbers in the sequence that the given length is divisible by
-        .filter(i => length % i === 0 && i != 1); // Ignore 1
+        .filter(i => length % i === 0);
 }
