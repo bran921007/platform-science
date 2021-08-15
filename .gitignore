@@ -12,3 +12,6 @@ test/*.log
 
 # Mac-specific files
 .DS_Store
+
+# Testing
+data/
