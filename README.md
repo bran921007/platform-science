@@ -86,5 +86,5 @@ Having identified both the class of problem and the available methods for solvin
 - The application will display on the console/terminal the total suitability score, along with the set of optimal driver/destination assignments that generated that score.
 - Example output:
 
-![Example output](img/Example output.png?raw=true)
+![Example output](img/ExampleOutput.png?raw=true)
 
