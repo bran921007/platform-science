@@ -61,11 +61,11 @@ Having identified both the class of problem and the available methods for solvin
 2. Install `git`, if not already installed:
    - See [instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) or google.
 3. Download code:
-   - Run/type '`git clone git@github.com:djilo/platform-science.git`' in terminal 
-4. Enter 'platform-science' project directory created by above step:
-   - Run/type '`cd platform-science`'
+   - Run/type `git clone git@github.com:djilo/platform-science.git` in terminal 
+4. Enter `platform-science` project directory created by above step:
+   - Run/type `cd platform-science`
 5. Install package dependencies:
-   - Run/type '`npm install`'
+   - Run/type `npm install`
 
 ### Usage
 
@@ -76,10 +76,10 @@ Having identified both the class of problem and the available methods for solvin
 3. The application will prompt you to enter the filepaths to the data files created in step 1 above:
 
    1.  `? Enter the path to the destinations list file` :
-      - Type/enter the path (e.g. '`test/data/destinations.txt`')
+      - Type/enter the path (e.g. `test/data/destinations.txt`)
 
    2.  `? Enter the path to the drivers list file` :
-      - Type/enter the path (e.g. '`test/data/drivers.txt`')
+      - Type/enter the path (e.g. `test/data/drivers.txt`)
 
 ### Output
 
