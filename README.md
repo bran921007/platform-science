@@ -99,7 +99,7 @@ The solution can be broken down into the following steps:
 ### Output
 
 - The application will display on the console/terminal the total suitability score, along with the set of optimal driver/destination assignments.
-- Example output:
+- Example run:
 
 ![Example output](img/ExampleOutput.png?raw=true)
 
