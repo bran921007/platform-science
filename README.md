@@ -1,6 +1,6 @@
-# Platform Science Coding Exercise
+# Coding Exercise
 
-The following problem was assigned as a coding exercise to evaluate problem-solving skills and coding practices for a candidate seeking a developer role within the company. The solution to the problem and how it is approached serve as the basis for discussion during interview sessions. The evaluation of the solution will consider such things as:
+The following problem was assigned as a coding exercise to evaluate problem-solving skills and coding practices for candidates seeking a developer role. The solution to the problem and how it is approached serve as the basis for discussion during interview sessions. The evaluation of the solution will consider such things as:
 
 - Code organization
 - Code readability
