@@ -126,7 +126,7 @@ function calculateSuitabilityScore (name: string, address: string): number {
     let score = address.length % 2 == 0 ? 
         getNumberOfVowels(name) * 1.5 // Even address length
         :
-        getNumberOfConsonants(name) // Odd address length
+        getNumberOfConsonants(name); // Odd address length
 
     // Augment score if address length shares common factors with name length
     return hasLengthWithCommonFactors(name, address) ?
