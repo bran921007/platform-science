@@ -30,18 +30,16 @@ The output should be the total SS and a matching between shipment destinations a
 
 Based on the requirements outlined in the problem statement, it is identified to be within a class of combinatorial optimization problems known as an [assignment problem](https://en.wikipedia.org/wiki/Assignment_problem). The structure of the problem consists of a set of agents that can be assigned to a set of tasks. Each possible assignment has an associated cost. The goal is to make assignments such that all tasks are assigned to an agent and that the total cost of those assignments is the least cost. 
 
-In the formulation given in the problem statement, the agents are the drivers and the tasks are the shipments/destinations. The additional constraint that one agent can be assigned to at most one task, and one task can be assigned to at most one agent, makes it a particular type of assignment problem known as a balanced assignment. It is also noted that the goal is framed as an optimization, where the total suitability score must be maximized. However the problem can be reframed as a minimization problem by transforming the suitability scores into cost scores by subtracting all the suitability scores from an arbitrarily large number (e.g. 1000). Since the minimization of this difference has the same affect as the maximization of the original scores, the assignments selected for minimization will be the same as those selected for maximization, thereby achieving the intended goal.
+In the formulation given in the problem statement, the agents are the drivers and the tasks are the shipments/destinations. The additional constraint that one agent can be assigned to at most one task, and one task can be assigned to at most one agent, makes it a particular type of assignment problem known as a balanced assignment. It is also noted that the goal is framed as an optimization, where the total suitability score must be maximized. However the problem can be reframed as a minimization problem by transforming the suitability scores into cost scores by subtracting all the suitability scores from an arbitrarily large number (e.g. 1000). This number can be any number outside the expected range of scores (i.e. must be larger than largest expected value). Since the minimization of this difference has the same affect as the maximization of the original scores, the assignments selected for minimization will be the same as those selected for maximization, thereby achieving the intended goal.
 
-Online research found four well-known methods for solving the minimization problem. There were others, but these were the most prominent:
+Online research found these well-known methods for solving the minimization problem. There were others, but these were the most prominent:
 
 - Complete enumeration method
   - Brute-force approach that enumerates every possible combination of assignments and their associated costs/rewards and then selects the optimal combinations based on the optimization goal (i.e. cost minimization or reward maximization). This method doesn't scale well as the number of agents and tasks grows (time complexity of O(n!))
 - Simplex method
   - Linear programming approach where an objective function that represents a cost or reward, and a set of constraints bound the solution space. The vertices of the bound space form the set of feasible solutions, which are then searched for the optimal solution. Can be solved graphically or algebraicly.
-- Transportation method
-  - 
 - Hungarian (Kuhn-Munkres) method
-  - 
+  - Utilizes a square matrix where the rows represent agents and the columns represent tasks. Each entry in the matrix corresponds to a cost associated with that agent/task pairing. The process involves reducing the entry values to zeros by first identifying the lowest value in each row and then subtracting that value from each entry in that row. Next, column reduction is performed where the lowest value in each column is subtracted from each entry in its column. Then identify the least number of rows and columns that cover all zeros in the matrix. If the number of covered rows and columns is equal to the number of agents/tasks, then an optimal solution can be found in the set of zeros. The solution should have only one zero in both the row and column of the zero entry.
 
 Of the four, the Hungarian method provides the most efficient algorithm with time complexity of O(n<sup>3</sup>). 
 
@@ -54,14 +52,14 @@ Of the four, the Hungarian method provides the most efficient algorithm with tim
 
 ### Approach
 
-Having identified both the class of problem and the available methods for solving it, it was determined that the best method to employ was the Hungarian algorithm, due to it's efficiency and availability of an existing package ([munkres-js](https://github.com/addaleax/munkres-js)) that implements it in the chosen language. Since the role being considered for requires proficiency in `node.js`, the selection of node as the implementation language was a natural choice.
+Having identified both the class of problem and the available methods for solving it, it was determined that the best method to employ was the Hungarian algorithm, due to it's efficiency and availability of an existing package ([munkres-js](https://github.com/addaleax/munkres-js)) that implements it in the chosen language. Since the role being considered for requires proficiency in `node.js`, the selection of `node` as the implementation language was a natural choice.
 
-The solution can be broken down into the following main steps:
+The solution can be broken down into the following steps:
 
 1. Read the input data files that contain the names of drivers and the addresses of destinations that need to be assigned
-2. Take the inputs and construct a reward matrix based on the suitability score algorithm, as well as construct a matrix that pairs all drivers to all tasks where each entry corresponds to an associated entry in the rewards matrix. This correspondence of rewards to driver-to-destination mappings will be used to correspond final assignments based on the rewards matrix to actual driver/destination pairings that can be displayed to the user in a more human-readable format.
+2. Take the inputs and construct a reward matrix based on the suitability score algorithm, as well as construct a matrix that pairs all drivers to all tasks where each entry corresponds to an associated entry in the rewards matrix. This correspondence of rewards to driver-to-destination pairings will be used to correspond final assignments based on the rewards matrix to actual driver-to-destination pairings that can be displayed to the user in a human-readable format.
 3. Convert the reward matrix into a cost matrix
-4. Feed the cost matrix as input to the munkres-js package to generate the matrix of least-cost assignments
+4. Feed the cost matrix as input to the [munkres-js](https://github.com/addaleax/munkres-js) package to generate the matrix of least-cost assignments
 5. Use the least-cost assignments and the reward matrix to produce the total suitability score
 6. Map the least-cost assignment matrix to driver/destination pairs associated with the assignments
 7. Display the results
