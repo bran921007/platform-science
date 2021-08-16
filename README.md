@@ -28,28 +28,43 @@ The output should be the total SS and a matching between shipment destinations a
 
 ## Analysis
 
-Based on the requirements outlined in the problem statement, it is identified to be within the class of combinatorial optimization problems known as an [assignment problem](https://en.wikipedia.org/wiki/Assignment_problem). The structure of the problem consists of a set of agents that can be assigned to a set of tasks. One agent can be assigned to at most one task, and one task can be assigned to at most one agent. Each possible assignment has an associated cost. There is typically an optimization function that calculates the cost. The goal is to make assignments such that all tasks are assigned to an agent and the total cost is minimized. In this case, the agents are the drivers and the tasks are the shipments/destinations. Also note that the goal is to maximize the suitability score, rather than minimizing a cost. However the problem can be converted into a minimization problem by transforming the suitability scores into cost scores by subtracting all the suitability scores from an arbitrarily large number (e.g. 1000). Since the minimization of this difference has the same affect as the maximization of the original scores, the same assignments will be selected for the maximization.
+Based on the requirements outlined in the problem statement, it is identified to be within a class of combinatorial optimization problems known as an [assignment problem](https://en.wikipedia.org/wiki/Assignment_problem). The structure of the problem consists of a set of agents that can be assigned to a set of tasks. Each possible assignment has an associated cost. The goal is to make assignments such that all tasks are assigned to an agent and that the total cost of those assignments is the least cost. 
 
-Their are four known methods for solving this problem. Each has it's own advantages and disadvantages:
+In the formulation given in the problem statement, the agents are the drivers and the tasks are the shipments/destinations. The additional constraint that one agent can be assigned to at most one task, and one task can be assigned to at most one agent, makes it a particular type of assignment problem known as a balanced assignment. It is also noted that the goal is framed as an optimization, where the total suitability score must be maximized. However the problem can be reframed as a minimization problem by transforming the suitability scores into cost scores by subtracting all the suitability scores from an arbitrarily large number (e.g. 1000). Since the minimization of this difference has the same affect as the maximization of the original scores, the assignments selected for minimization will be the same as those selected for maximization, thereby achieving the intended goal.
 
-- Complete enumeration method:
-  - Enumerate every possible combination of assignments and then select the optimal combinations. This method doesn't scale well as the number of agents and tasks grows.
+Online research found four well-known methods for solving the minimization problem. There were others, but these were the most prominent:
+
+- Complete enumeration method
+  - Brute-force approach that enumerates every possible combination of assignments and their associated costs/rewards and then selects the optimal combinations based on the optimization goal (i.e. cost minimization or reward maximization). This method doesn't scale well as the number of agents and tasks grows (time complexity of O(n!))
 - Simplex method
+  - Linear programming approach where an objective function that represents a cost or reward, and a set of constraints bound the solution space. The vertices of the bound space form the set of feasible solutions, which are then searched for the optimal solution. Can be solved graphically or algebraicly.
 - Transportation method
-- Hungarian (Munkres) method
+  - 
+- Hungarian (Kuhn-Munkres) method
+  - 
 
-Of the four, the Hungarian method provides the most efficient algorithm with time complexity of O(n<sup>3</sup>).  
+Of the four, the Hungarian method provides the most efficient algorithm with time complexity of O(n<sup>3</sup>). 
 
 ## Solution
 
 ### Assumptions
 
 - The language used in the text is English
-- Whitespaces not significant in name and address string length counts
+- Whitespaces are not significant in the name and address string length counts
 
 ### Approach
 
-Having identified both the class of problem and the available methods for solving it, it was determined that the best method to employ was the Hungarian algorithm, due to it's efficiency and availability of an existing package that implements it in the chosen language. Since the role being considered for requires proficiency in node.js, the selection of node as the implementation language was natural.
+Having identified both the class of problem and the available methods for solving it, it was determined that the best method to employ was the Hungarian algorithm, due to it's efficiency and availability of an existing package ([munkres-js](https://github.com/addaleax/munkres-js)) that implements it in the chosen language. Since the role being considered for requires proficiency in `node.js`, the selection of node as the implementation language was a natural choice.
+
+The solution can be broken down into the following main steps:
+
+1. Read the input data files that contain the names of drivers and the addresses of destinations that need to be assigned
+2. Take the inputs and construct a reward matrix based on the suitability score algorithm, as well as construct a matrix that pairs all drivers to all tasks where each entry corresponds to an associated entry in the rewards matrix. This correspondence of rewards to driver-to-destination mappings will be used to correspond final assignments based on the rewards matrix to actual driver/destination pairings that can be displayed to the user in a more human-readable format.
+3. Convert the reward matrix into a cost matrix
+4. Feed the cost matrix as input to the munkres-js package to generate the matrix of least-cost assignments
+5. Use the least-cost assignments and the reward matrix to produce the total suitability score
+6. Map the least-cost assignment matrix to driver/destination pairs associated with the assignments
+7. Display the results
 
 ### Deliverables
 
@@ -75,7 +90,7 @@ Having identified both the class of problem and the available methods for solvin
 
 2. Start the application by running/typing '`npm run start`' from within the project directory (i.e. '`platform-science`').
 
-3. The application will prompt you to enter the filepaths to the data files created in step 1 above:
+3. The application will prompt the user to enter the filepaths to the data files created in step 1 above:
 
    1.  `? Enter the path to the destinations list file` :
       - Type/enter the path (e.g. `test/data/destinations.txt`)
@@ -85,7 +100,7 @@ Having identified both the class of problem and the available methods for solvin
 
 ### Output
 
-- The application will display on the console/terminal the total suitability score, along with the set of optimal driver/destination assignments that generated that score.
+- The application will display on the console/terminal the total suitability score, along with the set of optimal driver/destination assignments.
 - Example output:
 
 ![Example output](img/ExampleOutput.png?raw=true)
