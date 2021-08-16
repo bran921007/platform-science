@@ -28,7 +28,9 @@ The output should be the total SS and a matching between shipment destinations a
 
 ## Analysis
 
-Based on the requirements outlined in the problem statement, it is identified to be within the class of combinatorial optimization problems known as the [assignment problem](https://en.wikipedia.org/wiki/Assignment_problem). The structure of the problem consists of a set of agents that can be assigned to a set of tasks. One agent can be assigned to at most one task, and one task can be assigned to at most one agent. Each possible assignment has an associated score. This score can represent either a cost or a reward. The goal is to make assignments such that all tasks are assigned an agent and the total score of those assignment is optimized. For the case where the score represents a cost, the optimization is to minimize the total score. Conversely, if the score is a reward, the optimization is to maximize the total score. In this case, the agents are the drivers and the tasks are the shipments/destinations. The suitability score represents a reward. Therefore the goal is to maximize the score. Their are four known methods for solving this problem:
+Based on the requirements outlined in the problem statement, it is identified to be within the class of combinatorial optimization problems known as an [assignment problem](https://en.wikipedia.org/wiki/Assignment_problem). The structure of the problem consists of a set of agents that can be assigned to a set of tasks. One agent can be assigned to at most one task, and one task can be assigned to at most one agent. Each possible assignment has an associated cost. There is typically an optimization function that calculates the cost. The goal is to make assignments such that all tasks are assigned to an agent and the total cost is minimized. In this case, the agents are the drivers and the tasks are the shipments/destinations. Also note that the goal is to maximize the suitability score, rather than minimizing a cost. However the problem can be converted into a minimization problem by transforming the suitability scores into cost scores by subtracting all the suitability scores from an arbitrarily large number (e.g. 1000). Since the minimization of this difference has the same affect as the maximization of the original scores, the same assignments will be selected for the maximization.
+
+Their are four known methods for solving this problem. Each has it's own advantages and disadvantages:
 
 - Complete enumeration method:
   - Enumerate every possible combination of assignments and then select the optimal combinations. This method doesn't scale well as the number of agents and tasks grows.
@@ -47,7 +49,7 @@ Of the four, the Hungarian method provides the most efficient algorithm with tim
 
 ### Approach
 
-Having identified both the class of problem and the available methods for solving it, it was determined that the best method was the Hungarian algorithm due to it's efficiency and availability of an existing package that implements it in the chosen language. Since the role being considered for requires proficiency in node.js, the selection of node as the implementation language was natural.
+Having identified both the class of problem and the available methods for solving it, it was determined that the best method to employ was the Hungarian algorithm, due to it's efficiency and availability of an existing package that implements it in the chosen language. Since the role being considered for requires proficiency in node.js, the selection of node as the implementation language was natural.
 
 ### Deliverables
 
