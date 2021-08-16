@@ -5,7 +5,9 @@ import munkres from 'munkres-js';
 import { IAssignment } from './models';
 
 const {drivers, destinations} = await readDriversAndDestinations();
-const {totalScore, assignments} = assignDriversToDestinations(drivers, destinations);
+const {totalScore, assignments} = getScoreAndMakeAssignments(drivers, destinations);
+
+displayOutput(totalScore, assignments);
 
 async function readDriversAndDestinations (
 ) : Promise<{drivers: string[], destinations: string[]}> {
@@ -13,23 +15,20 @@ async function readDriversAndDestinations (
     const input = await inquirer.prompt(
         [
             {
-                name: 'destinationsListPath',
-                message: 'Enter the relative path to the destinations list file'
+                name: 'destinationsFilePath',
+                message: 'Enter the path to the destinations list file'
             },
             {
-                name: 'driversListPath',
-                message: 'Enter the relative path to the drivers list file'
+                name: 'driversFilePath',
+                message: 'Enter the path to the drivers list file'
             }
         ]
     );
 
-    const {destinationsListPath, driversListPath} = input;
+    const {destinationsFilePath, driversFilePath} = input;
+    const destinations = await getContents(destinationsFilePath);
+    const drivers = await getContents(driversFilePath);
 
-    const destinations = await getContents(destinationsListPath);
-    const drivers = await getContents(driversListPath);
-
-    console.log(`drivers: ${drivers}`);
-    console.log(`destinations: ${destinations}`);
     return {drivers, destinations};
 }
 
@@ -48,9 +47,9 @@ async function getContents (filepath: string
     return contents;
 }
 
-function assignDriversToDestinations (
-    names: Array<string>,
-    addresses: Array<string>
+function getScoreAndMakeAssignments (
+    names: string[],
+    addresses: string[]
 ) : {totalScore: number, assignments: Map<string, string>} {
 
     // Create reward and cost matrices. The reward matrix is generated from
@@ -58,26 +57,22 @@ function assignDriversToDestinations (
     // derived from the reward matrix by subtracting all scores in the reward
     // matrix from the same arbitrarily large number. 
     const n = names.length;
-    const namesToAddressesMap = initMatrix(n, {});
+    const namesToAddressesMap = initMatrix<IAssignment>(n, {}); // Initialize with dummy values
     const {rewards, costs} = createRewardAndCostMatrices(
         names, addresses, namesToAddressesMap
     );
 
-    // Use derived cost matrix to obtain the optimized driver/destination
+    // Use cost matrix to obtain the optimized driver/destination
     // pairings in the form of an array of all matrix positions (i.e. [i,j])
     // that correspond to optimized pairings. Again, these optimized cost
     // pairings correspond to the optimized reward pairings in the original
-    // reward matrix, so the indices are the same
+    // reward matrix, so the assignments will work for maximization problem
     const assignmentIndices = munkres(costs);
 
-    // Calculate the total suitability score from the assignments and the
-    // original reward matrix
-    const totalScore = calculateTotalSuitabilityScore(
-        rewards, assignmentIndices
-    );
+    const totalScore = calculateTotalSuitabilityScore(rewards, assignmentIndices);
 
-    // TODO
-    const assignments: Map<string, string> = new Map<string, string>();
+    const assignments = getNamesAndAddresses(assignmentIndices, namesToAddressesMap);
+
     return {totalScore, assignments};
 }
 
@@ -90,7 +85,7 @@ function createRewardAndCostMatrices (
 
     // Initialize the n x n reward matrix with zeros
     const n = addresses.length;
-    const rewardMatrix: Array<Array<number>> = initMatrix(n, new Number(0));
+    const rewardMatrix = initMatrix<number>(n, new Number(0));
 
     // Construct reward matrix, as well as fill mapping of all pairs of driver
     // names to destination addresses. This will be used to make the assignments
@@ -112,17 +107,14 @@ function createRewardAndCostMatrices (
     return {rewards: rewardMatrix, costs: costMatrix};
 }
 
-function calculateTotalSuitabilityScore (
-    scores: Array<Array<number>>,
-    indices: Array<Array<number>>
+function calculateTotalSuitabilityScore (scores: number[][], indices: number[][]
 ) : number {
-    // TODO
     return indices.reduce((totalScore, current) => {
         return totalScore + scores[current[0]][current[1]];
     }, 0);
 }
 
-function initMatrix (size: number, initValue: object) {
+function initMatrix<T> (size: number, initValue: object): Array<Array<T>> {
     return new Array(size).fill(0).map((item: number) => {
         return new Array(size).fill(initValue);
     });
@@ -141,6 +133,20 @@ function calculateSuitabilityScore (name: string, address: string): number {
         score * 1.5 // Increase by 50% above base SS
         :
         score;
+}
+
+function getNamesAndAddresses (
+    indices: Array<Array<number>>,
+    mapping: Array<Array<IAssignment>>
+) : Map<string, string> {
+
+    const namesAndAddresses: Map<string, string> = new Map<string, string>();
+    indices.forEach((current) => {
+        const nameAndAddress = mapping[current[0]][current[1]];
+        namesAndAddresses.set(nameAndAddress.driver, nameAndAddress.destination);
+    });
+
+    return namesAndAddresses;
 }
 
 function getNumberOfVowels (name: string): number {
@@ -164,14 +170,24 @@ function hasLengthWithCommonFactors(name: string, address: string): boolean {
     return addressLengthFactors.some(factor => nameLengthFactors.includes(factor));
 }
 
-function stripWhiteSpace (str: string) {
+function stripWhiteSpace (str: string): string {
     return str.replace(/\s+/g,'');
 }
-function getFactorsBesides1 (length: number) {
+
+function getFactorsBesides1 (length: number): number[] {
     return Array
         // Create sequence of numbers, ignoring 1, up to the given number
         // e.g. 7 -> [2,3,4,5,6,7]
         .from(Array(length), (_, i) => i + 2)
         // Filter for numbers in the sequence that the given number is divisible by
         .filter(i => length % i === 0);
+}
+
+function displayOutput(score: number, assignments: Map<string, string>) {
+    console.log(`total score: ${score}`);
+    console.log('assignments:');
+    assignments.forEach((destination, driver) => {
+        console.log(`\tDriver: ${driver}`);
+        console.log(`\tDestination: ${destination}\n`);
+    });
 }
