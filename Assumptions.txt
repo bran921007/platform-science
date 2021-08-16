@@ -1,2 +1,0 @@
-The language used is English
-Whitespaces not significant in name and address string length counts
