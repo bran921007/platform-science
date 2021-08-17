@@ -39,8 +39,12 @@ Online research found these well-known methods for solving the minimization prob
 - Simplex method
   - Linear programming approach where an objective function that represents a cost or reward, and a set of constraints bound the solution space. The vertices of the bound space form the set of feasible solutions, which are then searched for the optimal solution.
 - Hungarian (Kuhn-Munkres) method
-  - Utilizes a square matrix where the rows represent agents and the columns represent tasks. Each entry in the matrix corresponds to a cost associated with that agent/task pairing. The process involves reducing the entry values to zeros by first identifying the lowest value in each row and then subtracting that value from each entry in that row. This results in at least one zero in each row. 
-  - Next, column reduction is performed where the lowest value in each column is subtracted from each entry in its column. Then identify the least number of rows and columns that cover all zeros in the matrix. If the number of covered rows and columns is equal to the number of agents/tasks, then an optimal solution can be found in the set of zeros. The solution should have only one zero in both the row and column of the zero entry.
+  - Utilizes a square matrix where the rows represent agents and the columns represent tasks. Each entry in the matrix corresponds to a cost associated with that agent/task pairing. The process involves successively reducing entry values to zeros in order to identify eligible assignments.
+  1. For each row of the matrix, find the smallest element and subtract it from every element in its row.
+  2. Do the same (as step 1) for all columns.
+  3. Cover all zeros in the matrix using minimum number of horizontal and vertical lines.
+  4. Test for Optimality: If the minimum number of covering lines is n, an optimal assignment is possible and we are finished. Else if lines are lesser than n, we haven’t found the optimal assignment, and must proceed to step 5.
+  5. Determine the smallest entry not covered by any line. Subtract this entry from each uncovered row, and then add it to each covered column. Return to step 3.
 
 Of the four, the Hungarian method provides the most efficient algorithm with time complexity of O(n<sup>3</sup>). 
 
