@@ -44,7 +44,7 @@ Online research found these well-known methods for solving the minimization prob
   1. For each row of the matrix, find the smallest element and subtract it from every element in its row.
   2. Do the same (as step 1) for all columns.
   3. Cover all zeros in the matrix using minimum number of horizontal and vertical lines.
-  4. Test for Optimality: If the minimum number of covering lines is n, an optimal assignment is possible. Select the zeros that are the only ones in its respective row and column. These selections are the final assignments and the process is completed. Else if lines are lesser than n, we haven’t found the optimal assignment, and must proceed to step 5.
+  4. Test for Optimality: If the minimum number of covering lines is n, an optimal assignment is possible. Select the zeros that are the only ones in its respective row and column. These selections are the final assignments and the process is complete. Else if lines are lesser than n, we haven’t found the optimal assignment, and must proceed to step 5.
   5. Determine the smallest entry not covered by any line. Subtract this entry from each uncovered row, and then add it to each covered column. Return to step 3.
 
 Of the four, the Hungarian method provides the most efficient algorithm with time complexity of O(n<sup>3</sup>). 
