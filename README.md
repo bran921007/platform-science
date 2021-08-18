@@ -47,7 +47,7 @@ Online research found these well-known methods for solving the minimization prob
   4. Test for Optimality: If the minimum number of covering lines is n, an optimal assignment is possible. Select the zeros that are the only ones in its respective row and column. These selections are the final assignments and the process is complete. Else if lines are less than n, we haven’t found the optimal assignment, and must proceed to step 5.
   5. Determine the smallest entry not covered by any line. Subtract this entry from each uncovered row, and then add it to each covered column. Return to step 3.
 
-Of the four, the Hungarian method provides the most efficient algorithm with time complexity of O(n<sup>3</sup>). 
+Of the three, the Hungarian method provides the most efficient algorithm with time complexity of O(n<sup>3</sup>). 
 
 ## Solution
 
