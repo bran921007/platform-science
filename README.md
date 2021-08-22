@@ -39,7 +39,7 @@ Online research found these well-known methods for solving the minimization prob
 - Simplex method
   - Linear programming approach where an objective function that represents a cost or reward, and a set of constraints bound the solution space. The vertices of the bound space form the set of feasible solutions, which are then searched for the optimal solution.
 - Hungarian (Kuhn-Munkres) method
-  - Utilizes an n x n square matrix where the rows represent agents and the columns represent tasks. Each entry in the matrix corresponds to a cost associated with that agent/task pairing. The process involves successively reducing entry values to zeros in order to easily identify eligible assignments. The key insight is the fact that adding or subtracting a fixed number from all entries in any one row or column results in a cost matrix has an optimal assignment that is the same as the original matrix. The steps are as follows:
+  - Utilizes an n x n square matrix where the rows represent agents and the columns represent tasks. Each entry in the matrix corresponds to a cost associated with that agent/task pairing. The process involves successively reducing entry values to zeros in order to easily identify eligible assignments. The key insight is the fact that adding or subtracting a fixed number from all entries in any one row or column results in a cost matrix that has an optimal assignment which is the same as the original matrix. The steps are as follows:
   
   1. For each row of the matrix, find the smallest element and subtract it from every element in its row.
   2. Do the same (as step 1) for all columns.
